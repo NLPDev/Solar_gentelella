@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+<script>
+{% block jquery %}
+var endpoint = 'api/';
+var defaultData = [];
+var labels = [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: [function(data){
+        labels = data.Time;
+        defaultData = data.GHI;
+        tempdata=data.Temp;
+        setChart()
+    }],
+    error: function(error_data){
+        console.log("error");
+        console.log(error_data)
+    }
+});
+function setChart(){
+    var ctx = document.getElementById("myChart");
+    var ctx2 = document.getElementById("myChart2");
+    var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'GHI',
+            data: defaultData,
+            borderColor: "#3e95cd",
+            fill: false
+        }]},
+    options: {
+      title: {
+        display: true,
+        text: 'Daily Irradiance'
+      },
+       scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 50
+                }
+            }]
+        }
+    }
+
+});
+    var myChart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Temp',
+            data: tempdata,
+            borderColor: "#3e95cd",
+            fill: false
+        }]},
+    options: {
+      title: {
+        display: true,
+        text: 'Daily Temperature'
+      },
+       scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 50
+                }
+            }]
+        }
+    }
+
+});
+}
+
+{% endblock %}
+</script>
+
+{% block content %}
+
+
+
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Line graph<small>Sessions</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="myChart" ></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Bar graph <small>Sessions</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="myChart2" ></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+

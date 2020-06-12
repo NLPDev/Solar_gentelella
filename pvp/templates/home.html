@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel">
+
+            <form action="{% url "home" %}" method="POST">
+                {% csrf_token %}
+                {{ query_form.as_p }}
+                <input type="submit" value="Submit" />
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

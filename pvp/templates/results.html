@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel">
+                <div class="main-content">
+
+                    <div class="row" id="search-parameters">
+                        <h3>Solar Panel Model</h3>
+                            <button type="button" class="btn btn-outline-primary">{{ PVmodel }}</button>
+                    </div>
+                    <br><br>
+                         <div class="x_content">
+                            <canvas id="myChart" ></canvas>
+                        </div>
+                   <br><br><br>
+                </div> <!-- End main-content -->
+          </div>
+        </div>
+      </div>
+    </div>
+	<script>
+     {% block jquery %}
+    var endpoint = 'results/pvpchart/data/';
+    var defaultData = [];
+    var labels = [];
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: [function(data2){
+            labels = data2.Time;
+            defaultData = data2.PVData;
+            setChart()
+        }],
+        error: function(error_data){
+            console.log("error");
+            console.log(error_data)
+        }
+    });
+    function setChart(){
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Time',
+                data: defaultData,
+                borderColor: "#3e95cd",
+                fill: false
+            }]},
+        options: {
+          title: {
+            display: true,
+            text: 'Daily PV Power (DC-Watts)'
+          },
+           scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 50
+                    }
+                }]
+            }
+        }
+
+    });
+
+    }
+
+    {% endblock %}
+
+    </script>
+
+{% endblock %}

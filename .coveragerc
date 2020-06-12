@@ -1,0 +1,5 @@
+[run]
+include = solar/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
